@@ -1,93 +1,71 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("formu")
-    const nombre = document.getElementById("nombre")
-    const apellido = document.getElementById("apellido")
-    const email = document.getElementById("email")
-    const pass1 = document.getElementById("password1")
-    const pass2 = document.getElementById("password2")
-      const termsCheckbox = document.getElementById("terminos");
-    const termsText = document.getElementById("terminos-texto");
-    const modalButton = document.querySelector('button[data-bs-target="#modalTerminos"]');
+    const form = document.getElementById("formu");
+    const pass1 = document.getElementById("password1");
+    const pass2 = document.getElementById("password2");
+
+    // Añadir evento 'input' para resetear errores mientras el usuario escribe
+    pass1.addEventListener("input", resetValidationOnInput);
+    pass2.addEventListener("input", resetValidationOnInput);
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         event.stopPropagation();
-        let isValid = true
-     
-        // Resetear validaciones visuales
+
+        let isValid = true;
+
+        // Resetear las validaciones antes de empezar
         resetValidation();
 
-        // Validar nombre
-        if (!nombre.value.trim()) {
-            nombre.classList.add("is-invalid");
-            isValid = false;
-        }   
-         // Validar apellido
-        if (!apellido.value.trim()) {
-            apellido.classList.add("is-invalid");
+        // 1. Validar si el campo pass1 está vacío
+        if (!pass1.value.trim()) {
+            pass1.classList.add("is-invalid");
             isValid = false;
         }
 
-        // Validar email
-        if (!email.checkValidity()) {
-            email.classList.add("is-invalid");
-            isValid = false;
-        }
-          // Validar contraseña y repetir contraseña.
-        if (!pass1.value.trim() || pass1.value.length < 6) {
+        // 2. Validar si el campo pass1 tiene al menos 6 caracteres
+        if (pass1.value.length < 6) {
             pass1.classList.add("is-invalid");
             isValid = false;
-        } else if (pass1.value !== pass2.value) {
+        }
+
+        // 3. Validar si el campo pass2 está vacío
+        if (!pass2.value.trim()) {
             pass2.classList.add("is-invalid");
             isValid = false;
         }
-          // Validar checkbox de términos.
-        if (!termsCheckbox.checked) {
-            termsCheckbox.classList.add("is-invalid");
-            modalButton.classList.add("is-invalid");
-            termsText.style.display = "inline";
+
+        // 4. Validar si pass1 y pass2 son iguales
+        if (pass1.value && pass2.value && pass1.value !== pass2.value) {
+            pass2.classList.add("is-invalid");
             isValid = false;
         }
 
+        // Si el formulario es válido, mostrar un mensaje de éxito
         if (isValid) {
             alert("Formulario enviado con éxito");
-            form.reset();
+            form.reset();  // Reinicia el formulario
+            form.classList.remove("was-validated"); // Limpia la clase de validación
         } else {
             form.classList.add("was-validated");
         }
-    })
-  // Validación en tiempo real
-    addRealTimeValidation(nombre);
-    addRealTimeValidation(apellido);
-    addRealTimeValidation(email);
-    addRealTimeValidation(pass1);
-    addRealTimeValidation(pass2);
-
-      // Validación en tiempo real para el checkbox de términos.
-    termsCheckbox.addEventListener("change", function () {
-        if (termsCheckbox.checked) {
-            termsCheckbox.classList.remove("is-invalid");
-            modalButton.classList.remove("is-invalid");
-            termsText.style.display = "none";
-        }
     });
-      // Función para agregar validación en tiempo real a un campo.
-    function addRealTimeValidation(input) {
-        input.addEventListener("input", function () {
-            if (input.checkValidity()) {
-                input.classList.remove("is-invalid");
-            }
-        });
-    }
-     // Función para resetear las validaciones
+
+    // Función para resetear las validaciones visuales
     function resetValidation() {
-        nombre.classList.remove("is-invalid");
-        apellido.classList.remove("is-invalid");
-        email.classList.remove("is-invalid");
         pass1.classList.remove("is-invalid");
         pass2.classList.remove("is-invalid");
-        termsCheckbox.classList.remove("is-invalid");
-        modalButton.classList.remove("is-invalid");
-        termsText.style.display = "none";
     }
-})
+
+    // Función que se ejecuta en el evento 'input' para borrar errores mientras el usuario escribe
+    function resetValidationOnInput() {
+        // Si el campo tiene texto y cumple las reglas, eliminamos el error
+        if (pass1.value.trim() && pass1.value.length >= 6) {
+            pass1.classList.remove("is-invalid");
+        }
+        if (pass2.value.trim() && pass1.value === pass2.value) {
+            pass2.classList.remove("is-invalid");
+        }
+    }
+});
+
+

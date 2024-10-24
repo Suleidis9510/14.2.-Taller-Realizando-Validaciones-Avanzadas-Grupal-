@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             email.classList.add("is-invalid");
             isValid = false;
         }
-          // Validar contraseña y repetir contraseña
+          // Validar contraseña y repetir contraseña.
         if (!pass1.value.trim() || pass1.value.length < 6) {
             pass1.classList.add("is-invalid");
             isValid = false;
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             pass2.classList.add("is-invalid");
             isValid = false;
         }
-          // Validar checkbox de términos
+          // Validar checkbox de términos.
         if (!termsCheckbox.checked) {
             termsCheckbox.classList.add("is-invalid");
             modalButton.classList.add("is-invalid");
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addRealTimeValidation(pass1);
     addRealTimeValidation(pass2);
 
-      // Validación en tiempo real para el checkbox de términos
+      // Validación en tiempo real para el checkbox de términos.
     termsCheckbox.addEventListener("change", function () {
         if (termsCheckbox.checked) {
             termsCheckbox.classList.remove("is-invalid");
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
             termsText.style.display = "none";
         }
     });
-      // Función para agregar validación en tiempo real a un campo
+      // Función para agregar validación en tiempo real a un campo.
     function addRealTimeValidation(input) {
         input.addEventListener("input", function () {
             if (input.checkValidity()) {
